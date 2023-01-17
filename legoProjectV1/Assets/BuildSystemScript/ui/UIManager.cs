@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
 
     public BuildPanelUI buildpanel;
+    public bool UIopen = false;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
             buildpanel.gameObject.SetActive(!buildpanel.gameObject.activeInHierarchy);
             if(buildpanel.gameObject.activeInHierarchy)buildpanel.PopulateButtons();
             SetMouseCurser(buildpanel.gameObject.activeInHierarchy);
+            UIopen = !UIopen;
         }
     }
 

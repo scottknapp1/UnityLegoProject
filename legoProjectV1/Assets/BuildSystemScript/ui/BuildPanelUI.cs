@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using System.Linq;
 using Unity.VisualScripting;
 
+
 public class BuildPanelUI : MonoBehaviour
 {
     
@@ -17,11 +18,14 @@ public class BuildPanelUI : MonoBehaviour
 
     public GameObject itemWindow;
     public GameObject temp;
+    public GameObject closeUI;
 
     public void onclick(BuildingData chosenData)
     {
         OnPartChoosen?.Invoke(chosenData);
         sideUI.UpdateSideDisplay(chosenData);
+        closeUI.gameObject.SetActive(false);
+        
     }
 
     public void OnClickedAllParts()

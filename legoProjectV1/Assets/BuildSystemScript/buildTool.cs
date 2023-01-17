@@ -14,13 +14,16 @@ public class buildTool : MonoBehaviour
     [SerializeField] private Material buildingMaterialPositive;
     [SerializeField] private Material buildingMaterialNegative;
     [SerializeField] private addtoparent _addtoparent;
-
+    
+    
     private bool deleteModeEnabled;
     private Camera _camera;
     
-
+    public GameObject sideUI;
     private building spawnedParts;
     private building targetPart;
+    
+    public bool engineBuilt = false;
     private void Start()
     {
         _camera = Camera.main;
@@ -113,6 +116,7 @@ public class buildTool : MonoBehaviour
         if(spawnedParts != null)
         {
             spawnedParts.UpdateMaterial(spawnedParts.IsOverLapping ? buildingMaterialNegative : buildingMaterialPositive);
+            
         }
         
 
@@ -121,14 +125,27 @@ public class buildTool : MonoBehaviour
             var gridPos = snapToGrid.Gridposision3D(hitInfo.point, 1.0f);
             spawnedParts.transform.position = gridPos;
             
-            if (Mouse.current.leftButton.wasPressedThisFrame && !spawnedParts.IsOverLapping)
+            if (Mouse.current.leftButton.wasPressedThisFrame && !spawnedParts.IsOverLapping )
             {
-                
+                if (sideUI.activeInHierarchy)
+                {
+                    return;
+                }
+                if (spawnedParts.AssingedData.PartType == PartType.engine && engineBuilt)
+                {
+                    return;
+                }
+
+                if (spawnedParts.AssingedData.PartType == PartType.engine)
+                {
+                    engineBuilt = true;
+                }
                 spawnedParts.PlaceBuildPart();
                 var dataCopy = spawnedParts.AssingedData;
                 spawnedParts = null;
                 ChoosePart(dataCopy);
                 _addtoparent.AddTolist(spawnedParts.gameObject);
+                
             }
         }
        
