@@ -7,7 +7,7 @@ public class WheelAddForce : MonoBehaviour
 {
     
     [SerializeField] private List<GameObject> wheels; 
-    private float speed = 300000;
+    private float speed = 200000;
     private bool wheelsFound = false;
     public gettingInandOutCar GettingInandOutCar;
     

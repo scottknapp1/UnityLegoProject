@@ -113,24 +113,26 @@ public class buildTool : MonoBehaviour
 
     private void PositionBuildingPreView()
     {
-        if(spawnedParts != null)
+        if (spawnedParts != null)
         {
-            spawnedParts.UpdateMaterial(spawnedParts.IsOverLapping ? buildingMaterialNegative : buildingMaterialPositive);
-            
+            spawnedParts.UpdateMaterial(
+                spawnedParts.IsOverLapping ? buildingMaterialNegative : buildingMaterialPositive);
+
         }
-        
+
 
         if (IsRayHitting(buildModeMask, out RaycastHit hitInfo) && spawnedParts != null)
         {
             var gridPos = snapToGrid.Gridposision3D(hitInfo.point, 1.0f);
             spawnedParts.transform.position = gridPos;
-            
-            if (Mouse.current.leftButton.wasPressedThisFrame && !spawnedParts.IsOverLapping )
+
+            if (Mouse.current.leftButton.wasPressedThisFrame && !spawnedParts.IsOverLapping)
             {
                 if (sideUI.activeInHierarchy)
                 {
                     return;
                 }
+
                 if (spawnedParts.AssingedData.PartType == PartType.engine && engineBuilt)
                 {
                     return;
@@ -140,15 +142,19 @@ public class buildTool : MonoBehaviour
                 {
                     engineBuilt = true;
                 }
-                spawnedParts.PlaceBuildPart();
-                var dataCopy = spawnedParts.AssingedData;
-                spawnedParts = null;
-                ChoosePart(dataCopy);
-                _addtoparent.AddTolist(spawnedParts.gameObject);
-                
+
+                if (engineBuilt)
+                {
+                    spawnedParts.PlaceBuildPart();
+                    var dataCopy = spawnedParts.AssingedData;
+                    spawnedParts = null;
+                    ChoosePart(dataCopy);
+                    _addtoparent.AddTolist(spawnedParts.gameObject);
+                }
+
             }
         }
-       
+
     }
 
     private void DeleteModeLogic()
@@ -177,6 +183,10 @@ public class buildTool : MonoBehaviour
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
+                if (targetPart.AssingedData.PartType == PartType.engine)
+                {
+                    engineBuilt = false;
+                }
                 Destroy(targetPart.gameObject);
                 targetPart = null;
             }
